@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پنل مدیریت محصولات - عطرینو</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Vazir", Tahoma, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+      padding: 20px;
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      color: #2c3e50;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: #7f8c8d;
+    }
+
+    .form-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+
+    .form-title {
+      font-size: 1.3rem;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    input, select {
+      padding: 12px 15px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    .image-preview {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .image-preview img {
+      max-width: 150px;
+      max-height: 150px;
+      border-radius: 8px;
+      border: 1px solid #eee;
+      display: none;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, #3498db, #2c3e50);
+      color: white;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+    }
+
+    .btn-danger {
+      background: linear-gradient(to right, #e74c3c, #c0392b);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-bottom: 1px solid #eee;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+
+    .product-brand {
+      color: #7f8c8d;
+      margin-bottom: 10px;
+    }
+
+    .product-details {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .detail-item {
+      text-align: center;
+    }
+
+    .detail-value {
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .detail-label {
+      font-size: 0.8rem;
+      color: #7f8c8d;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .action-input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1><i class="ri-shopping-bag-line"></i> پنل مدیریت محصولات</h1>
+      <p>محصولات خود را اضافه، ویرایش یا حذف کنید</p>
+    </div>
+
+    <!-- فرم افزودن محصول -->
+    <div class="form-card">
+      <h3 class="form-title">افزودن محصول جدید</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="newName">نام محصول</label>
+          <input type="text" id="newName" placeholder="مثلاً: Dior Sauvage">
+        </div>
+        <div class="form-group">
+          <label for="newBrand">برند</label>
+          <input type="text" id="newBrand" placeholder="مثلاً: Dior">
+        </div>
+        <div class="form-group">
+          <label for="newCategory">دسته</label>
+          <select id="newCategory">
+            <option value="عطر">عطر</option>
+            <option value="ادکلن">ادکلن</option>
+            <option value="لوازم_آرایشی">لوازم آرایشی</option>
+            <option value="کرم_پودر">کرم/پودر</option>
+            <option value="رژلب">رژلب</option>
+            <option value="سایر">سایر</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="newPrice">قیمت (تومان)</label>
+          <input type="number" id="newPrice" placeholder="مثلاً: 3000000">
+        </div>
+        <div class="form-group">
+          <label for="newInventory">موجودی</label>
+          <input type="number" id="newInventory" placeholder="مثلاً: 10">
+        </div>
+        <div class="form-group">
+          <label for="newImage">لینک تصویر</label>
+          <input type="text" id="newImage" placeholder="https://example.com/image.jpg" onchange="previewImage(this.value, 'newPreview')">
+        </div>
+      </div>
+      <div class="image-preview">
+        <img id="newPreview" src="" alt="پیش‌نمایش تصویر">
+      </div>
+      <button class="btn btn-primary" onclick="addProduct()">
+        <i class="ri-add-line"></i> افزودن محصول
+      </button>
+    </div>
+
+    <!-- لیست محصولات -->
+    <h3 class="form-title">محصولات موجود</h3>
+    <div class="products-grid" id="productsGrid">
+      <!-- اینجا کارت‌های محصول لود می‌شوند -->
+    </div>
+  </div>
+
+  <script>
+    // شناسه شیت گوگل
+    const sheetId = 'your_google_sheet_id_here';
+    const sheetName = 'Products';
+    const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
+
+    // لود داده‌ها
+    function loadProducts() {
+      fetch(url)
+        .then(response => response.text())
+        .then(data => {
+          const json = JSON.parse(data.substring(47, data.length - 2));
+          const rows = json.table.rows;
+          const container = document.getElementById('productsGrid');
+          container.innerHTML = '';
+
+          rows.forEach((row, index) => {
+            const cells = row.c;
+            const name = cells[0] ? cells[0].v : '';
+            const brand = cells[1] ? cells[1].v : '';
+            const category = cells[2] ? cells[2].v : '';
+            const price = cells[3] ? cells[3].v : 0;
+            const inventory = cells[4] ? cells[4].v : 0;
+            const image = cells[5] ? cells[5].v : '';
+
+            const productCard = document.createElement('div');
+            productCard.className = 'product-card';
+
+            productCard.innerHTML = `
+              <img src="${image || 'https://placehold.co/300x200?text=عکس+وجود+ندارد'}" alt="${name}" class="product-image">
+              <div class="product-info">
+                <div class="product-name">${name}</div>
+                <div class="product-brand">${brand} | ${category}</div>
+                <div class="product-details">
+                  <div class="detail-item">
+                    <div class="detail-value">${price.toLocaleString()}</div>
+                    <div class="detail-label">قیمت</div>
+                  </div>
+                  <div class="detail-item">
+                    <div class="detail-value">${inventory}</div>
+                    <div class="detail-label">موجودی</div>
+                  </div>
+                </div>
+                <div class="product-actions">
+                  <input type="number" class="action-input" id="editPrice-${index}" value="${price}" placeholder="قیمت">
+                  <input type="number" class="action-input" id="editInventory-${index}" value="${inventory}" placeholder="موجودی">
+                  <button class="btn btn-danger" onclick="deleteProduct(${index})">
+                    <i class="ri-delete-bin-line"></i>
+                  </button>
+                  <button class="btn btn-primary" onclick="updateProduct(${index})">
+                    <i class="ri-save-line"></i>
+                  </button>
+                </div>
+              </div>
+            `;
+
+            container.appendChild(productCard);
+          });
+        })
+        .catch(error => console.error('خطا در لود داده:', error));
+    }
+
+    // پیش‌نمایش تصویر
+    function previewImage(url, elementId) {
+      const img = document.getElementById(elementId);
+      img.src = url;
+      img.style.display = url ? 'block' : 'none';
+    }
+
+    // افزودن محصول جدید
+    function addProduct() {
+      const name = document.getElementById('newName').value;
+      const brand = document.getElementById('newBrand').value;
+      const category = document.getElementById('newCategory').value;
+      const price = document.getElementById('newPrice').value;
+      const inventory = document.getElementById('newInventory').value;
+      const image = document.getElementById('newImage').value;
+
+      if (!name || !brand || !price || !inventory) {
+        alert('لطفاً تمام فیلدهای ضروری را پر کنید.');
+        return;
+      }
+
+      const newRow = {
+        name: name,
+        brand: brand,
+        category: category,
+        price: price,
+        inventory: inventory,
+        image: image
+      };
+
+      fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'add',
+          newRow
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('محصول با موفقیت اضافه شد!');
+        document.getElementById('newName').value = '';
+        document.getElementById('newBrand').value = '';
+        document.getElementById('newPrice').value = '';
+        document.getElementById('newInventory').value = '';
+        document.getElementById('newImage').value = '';
+        document.getElementById('newPreview').src = '';
+        document.getElementById('newPreview').style.display = 'none';
+        loadProducts();
+      })
+      .catch(error => console.error('خطا:', error));
+    }
+
+    // ویرایش محصول
+    function updateProduct(index) {
+      const newPrice = document.getElementById(`editPrice-${index}`).value;
+      const newInventory = document.getElementById(`editInventory-${index}`).value;
+
+      fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'update',
+          index: index,
+          price: newPrice,
+          inventory: newInventory
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('اطلاعات با موفقیت به‌روزرسانی شد!');
+        loadProducts();
+      })
+      .catch(error => console.error('خطا:', error));
+    }
+
+    // حذف محصول
+    function deleteProduct(index) {
+      if (!confirm('آیا از حذف این محصول اطمینان دارید؟')) return;
+
+      fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'delete',
+          index: index
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('محصول با موفقیت حذف شد!');
+        loadProducts();
+      })
+      .catch(error => console.error('خطا:', error));
+    }
+
+    // بارگذاری اولیه
+    loadProducts();
+  </script>
+
+</body>
+</html>
